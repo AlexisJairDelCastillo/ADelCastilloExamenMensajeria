@@ -1,0 +1,63 @@
+﻿@model ML.Conversacion
+@{
+    ViewData["Title"] = "NuevaConversacion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center"><strong>¿Con quien deseas conversar hoy?</strong></h1>
+        </div>
+    </div>
+
+    <hr />
+
+    @using (Html.BeginForm("NuevaConversacion", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.IdConversacion, new { @class = "control-label col-md-2 visually-hidden" })
+                @Html.TextBoxFor(model => model.IdConversacion, new { @class = "form-control visually-hidden", @readonly = true })
+                @Html.ValidationMessageFor(model => model.IdConversacion)
+            </div>
+
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.UsuarioConversacion.Usuario.IdUsuario, new { @class = "control-label col-md-2" })
+                @Html.TextBoxFor(model => model.UsuarioConversacion.Usuario.IdUsuario, new { @class = "form-control", @readonly = true })
+                @Html.ValidationMessageFor(model => model.UsuarioConversacion.Usuario.IdUsuario)
+            </div>
+
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.UsuarioConversacion.Contacto, new { @class = "control-label col-md-2" })
+                @Html.DropDownListFor(model => model.UsuarioConversacion.Contacto, new SelectList(Model.UsuarioConversacion.Usuario.Usuarios, "IdUsuario", "Nombre"), "Selecciona un contacto: ", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-md-4">
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Chatear" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @Html.ActionLink("Volver", "Conversaciones", "Usuario", htmlAttributes: new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+            </div>
+        </div>
+    }
+</div>

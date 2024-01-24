@@ -1,0 +1,77 @@
+﻿@model ML.Usuario
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .custom-card {
+        background-color: #ebebeb;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .custom-card:hover {
+            transform: translateY(-5px);
+        }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center"><strong>¿A quien deseas mandarle mensaje hoy?</strong></h2>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5">
+        <!-- Ajustado a 5 columnas -->
+        @if (Model != null)
+        {
+            @foreach (ML.Usuario usuario in Model.Usuarios)
+            {
+                <div class="col mb-4">
+                    <div class="card h-100 custom-card rounded-circle">
+                        <div class="card-body text-center">
+                            @if (usuario.Foto == null || usuario.Foto == "")
+                            {
+                                <img src="~/img/noUser.png" class="card-img-top" alt="Usuario" style="width: 80px; height: 80px; border-radius: 50%;" />
+                            }
+                            else
+                            {
+                                <img src="data:image/png;base64,@usuario.Foto" class="card-img-top" alt="Usuario" style="width: 80px; height: 80px; border-radius: 50%;" />
+                            }
+                            <h5 class="card-title">@usuario.Nombre</h5>
+                            <p class="card-text">@usuario.ApellidoPaterno @usuario.ApellidoMaterno</p>
+                            @using (Html.BeginForm("Conversaciones", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.UsuarioConversacion.Conversacion.IdConversacion, new { @class = "control-label col-md-2 visually-hidden" })
+                                        @Html.TextBoxFor(model => model.UsuarioConversacion.Conversacion.IdConversacion, new { @class = "form-control", @readonly = true })
+                                        @Html.ValidationMessageFor(model => model.UsuarioConversacion.Conversacion.IdConversacion)
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.IdUsuario, new { @class = "control-label col-md-2 visually-hidden" })
+                                        @Html.TextBoxFor(model => model.IdUsuario, new { @class = "form-control", @readonly = true })
+                                        @Html.ValidationMessageFor(model => model.IdUsuario)
+                                    </div>
+
+                                    @*@if (usuario.UsuarioConversacion.Conversacion == null)
+                                    {*@
+                                        @Html.ActionLink("Chatear", "Conversaciones", "Usuario", htmlAttributes: new { @class = "btn btn-success"/*, @IdConversacion = usuario.UsuarioConversacion.Conversacion.IdConversacion*/ })
+                                    @*}*@
+                                    
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+
+</div>

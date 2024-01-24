@@ -1,0 +1,49 @@
+﻿@model ML.UsuarioConversacion
+@{
+    ViewData["Title"] = "Conversaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center"><strong>Tus Conversaciones</strong></h1>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+        <div class="col-md-2">
+            @Html.ActionLink("Nueva Conversación", "NuevaConversacion", "Usuario", htmlAttributes: new { @class = "btn btn-success" })
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+        @if (Model != null)
+        {
+            @foreach (ML.UsuarioConversacion usuarioConversacion in Model.UsuariosConversaciones)
+            {
+                <div class="col-md-3 mb-3">
+                    <div class="card h-100 border rounded">
+                        <div class="card-body text-center">
+                            @if (usuarioConversacion.Usuario.Foto == null || usuarioConversacion.Usuario.Foto == "")
+                            {
+                                <img src="~/img/noUser.png" class="card-img-top" alt="Usuario" style="width: 80px; height: 80px; border-radius: 50%;" />
+                            }
+                            else
+                            {
+                                <img src="data:image/png;base64,@usuarioConversacion.Usuario.Foto" class="card-img-top" alt="Usuario" style="width: 80px; height: 80px; border-radius: 50%;" />
+                            }
+                            <h5 class="card-title">@usuarioConversacion.Contacto</h5>
+                            <p class="card-text">@usuarioConversacion.Conversacion.Fecha</p>
+                            <a href="@Url.Action("Mensajes", "Usuario", new { IdUsuarioConversacion = usuarioConversacion.IdUsuarioConversacion })" class="btn btn-primary">Abrir</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

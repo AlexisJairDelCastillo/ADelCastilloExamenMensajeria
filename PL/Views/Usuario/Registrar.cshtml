@@ -1,0 +1,175 @@
+﻿@model ML.Usuario
+@{
+    ViewData["Title"] = "Registrar";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+<body style="margin: 2em;">
+    <div class="container-fluid">
+        <br />
+
+        <div class="row">
+            <h2><strong>@ViewBag.Title</strong></h2>
+            <h5>Llena todos los campos con la información correspondiente.</h5>
+        </div>
+
+        <hr />
+
+        @using (Html.BeginForm("Registrar", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.IdUsuario, new { @class = "control-label col-md-2 visually-hidden" })
+                    @Html.TextBoxFor(model => model.IdUsuario, new { @class = "form-control visually-hidden", @readonly = true })
+                    @Html.ValidationMessageFor(model => model.IdUsuario)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Nombre, new { @class = "control-label col-md-2" })
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Nombre)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.ApellidoPaterno, new { @class = "control-label col-md-2" })
+                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ApellidoPaterno)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.ApellidoMaterno, new { @class = "control-label col-md-2" })
+                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ApellidoMaterno)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.CorreoElectronico, new { @class = "control-label col-md-2" })
+                    @Html.TextBoxFor(model => model.CorreoElectronico, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CorreoElectronico)
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Contrasenia, new { @class = "control-label col-md-2" })
+                    @Html.TextBoxFor(model => model.Contrasenia, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Contrasenia)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Foto, new { @class = "control-label col-md-2" })
+                    <input class="form-control" type="file" name="fileImage" id="foto">
+                </div>
+
+                <div class="col-md-3">
+                    @if (Model.Foto == null)
+                    {
+                        <img src="~/img/noUser.png" width="100px" height="100px" id="previsualizacion">
+                    }
+                    else
+                    {
+                        <img src="data:image/png;base64,@Model.Foto" width="100px" height="100px" id="previsualizacion">
+                    }
+                    @Html.HiddenFor(model => model.Foto)
+                    <span id="lblFoto" style="color: red"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-md-4">
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="@ViewBag.Action" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @Html.ActionLink("Volver", "Login", "Usuario", htmlAttributes: new { @class = "btn btn-secondary" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                </div>
+            </div>
+        }
+    </div>
+</body>
+
+@section Scripts{
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#previsualizacion').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#foto").change(function () {
+                readURL(this);
+            });
+
+            var $input = $('#foto');
+            var valid_extensions = ['png', 'jpg'];
+            $input.on('change', function (e) {
+                var $this = this;
+                var files = $this.files;
+
+                if (files) {
+                    if ($this.files.length > 1) {
+
+                    } else {
+                        var file = this.files[0];
+                        if (validar_extension(file)) {
+                            $("#lblFoto").html("");
+                        } else {
+                            $("#lblFoto").html("Extension Erronea");
+                            alert('Extension Erronea');
+                        }
+                    }
+                }
+            });
+
+            function validar_extension(foto) {
+                var file_name = imagen.name,
+                    file_extension = file_name.split('.').pop();
+
+                return valid_extensions.includes(file_extension);
+            }
+
+        });
+    </script>
+    }
+</html>
